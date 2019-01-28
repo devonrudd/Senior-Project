@@ -1,0 +1,58 @@
+
+2019-01-25: 
+	Installed VirtualBox on Desktop Computer
+	Setup Ubuntu18 on Virtual Box
+	
+	Programs installed on VM:
+	
+	(Update apt)
+		sudo apt-get update
+
+	(Curl)
+		sudo apt install curl
+		curl -V
+
+	(Docker)
+		https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository
+		sudo groupadd docker
+		sudo usermod -aG docker $USER
+		# Log out and in
+		docker run hello-world
+
+2019-01-27:
+	Command Run:
+
+	(Virtual Box Guest Add-on)
+		sudo apt install linux-headers-$(uname -r) build-essential dkms
+
+	Tested docker: 
+		docker run hello-world
+		Successful
+
+	(Docker Compose)
+		sudo apt install docker-compose
+
+	(Node.js and npm)
+		sudo bash -c "cat >/etc/apt/sources.list.d/nodesource.list" <<EOL
+			deb https://deb.nodesource.com/node_6.x xenial main
+			deb-src https://deb.nodesource.com/node_6.x xenial main
+			EOL
+
+		curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+		sudo apt update
+		sudo apt install nodejs
+		sudo apt install npm
+	
+	(Go Language)
+		sudo curl -O https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
+		sudo tar -xvf go1.9.2.linux-amd64.tar.gz
+		sudo mv go /usr/local
+		echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
+		source ~/.profile
+
+	
+	
+	
+	
+	
+	

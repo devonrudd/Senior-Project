@@ -50,9 +50,39 @@
 		echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
 		source ~/.profile
 
+	Took Snapshot of VM
 	
 	
+2019-01-31:	
+	Installed VS Code for Ubuntu
+
+	Commands Run:
+		curl -O https://hyperledger.github.io/composer/latest/prereqs-ubuntu.sh
+		chmod u+x prereqs-ubuntu.sh
+		./prereqs-ubuntu.sh
 	
+	(Hyperledger Composer Components)
+		npm install -g composer-cli (Command Line Interface)
+		npm install -g composer-rest-server (REST server)
+		npm install -g  composer-playground (Composer Playground)
+		npm install -g yo (Yeoman - allows creating, emptying, or populating blockchain networks)
+		npm install -g generator-hyperledger-composer (Hyperledger Composer generator for Yeoman)
 	
+	(Installing Hyperledger Fabric Development Server)
+		mkdir ~/fabric-tools && cd ~/fabric-tools
+		curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.zip
+		unzip fabric-dev-servers.zip
+		./downloadFabric.sh
+
+	(Start Docker images inside /fabric-tools to start Hyperledger Fabric Framework)
+		./startFabric.sh
 	
-	
+	(Create a Hyperledger Fabric peer administrator identity for your networks)
+		./createPeerAdminCard.sh
+
+	(Start the Composer Playground, which will run on port 8080 of the VM)
+		composer-playground
+
+2019-02-01
+	Created Test Tuna Blockchain
+		

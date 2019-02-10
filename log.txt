@@ -85,4 +85,8 @@
 
 2019-02-01
 	Created Test Tuna Blockchain
-		
+
+2019-02-08
+	Created Ticket System Blockchain
+	Created Shared Folder between VM and host called "SeniorProject" (has git on host)
+	

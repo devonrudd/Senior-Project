@@ -90,3 +90,37 @@
 	Created Ticket System Blockchain
 	Created Shared Folder between VM and host called "SeniorProject" (has git on host)
 	
+2019-02-16
+	Setup Mac for Blockchain use
+	(Installed nvm on Mac)
+		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+		source ~/.bash_profile
+		(Install lts version of nvm)
+		nvm install --lts
+		nvm use --lts
+
+	(Install Docker for Mac)
+		https://hub.docker.com/editions/community/docker-ce-desktop-mac
+
+	(Hyperledger Extension for VS Code)
+		Installed
+
+	(Setup ~/.bash_profile)
+		added 'nvm use --lts' at last line
+
+	(Installed Hyperledger Composer Playground)
+		npm install -g composer-cli@0.19 composer-rest-server@0.19 generator-hyperledger-composer@0.19 composer-playground@0.19 yo
+
+	(Created Fabric Development Folder)
+		mkdir ~/fabric-dev-servers
+		cd ~/fabric-dev-servers
+	
+	(Download Fabric Servers)
+		curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.zip
+		unzip fabric-dev-servers.zip
+		./downloadFabric.sh
+
+	(Redownload composer-cli)
+		npm install -g composer-cli
+		**FAILED
+	

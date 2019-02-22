@@ -21,11 +21,11 @@ asset Ticket identified by ticketId {
   o String ticketId
   --> Technician owner
   --> Client creator
-  o String status
   o DateTime created
   o DateTime updated
   o DateTime closed
-  o String value
+  o String status
+  o String description
 }
 
 participant Technician identified by technicianId {

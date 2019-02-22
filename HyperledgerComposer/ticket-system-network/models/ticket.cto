@@ -21,9 +21,9 @@ asset Ticket identified by ticketId {
   o String ticketId
   --> Technician owner
   --> Client creator
+  o TicketStatus status
   o String subject
   o String description
-  o TicketStatus status
 }
 
 abstract participant Person identified by email {

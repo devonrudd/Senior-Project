@@ -17,25 +17,40 @@
  */
 namespace org.example.basic
 
-asset SampleAsset identified by assetId {
-  o String assetId
-  --> SampleParticipant owner
+asset Ticket identified by ticketId {
+  o String ticketId
+  --> Technician owner
+  --> Client creator
+  o String status
+  o DateTime created
+  o DateTime updated
+  o DateTime closed
   o String value
 }
 
-participant SampleParticipant identified by participantId {
-  o String participantId
+participant Technician identified by technicianId {
+  o String technicianId
   o String firstName
   o String lastName
 }
 
-transaction SampleTransaction {
-  --> SampleAsset asset
-  o String newValue
+participant Client identified by clientId {
+  o String clientId
+  o String firstName
+  o String lastName
+//  o String email regex=/\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/
+//  o String email regex=/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/
+}
+
+transaction openNewTicket {
+  --> Ticket asset
+  --> Client participant
+  o DateTime openTime
+  o String details
 }
 
 event SampleEvent {
-  --> SampleAsset asset
+  --> Ticket asset
   o String oldValue
   o String newValue
 }

@@ -15,27 +15,27 @@
 /**
  * Sample access control list.
  */
-rule EverybodyCanReadEverything {
+rule TechniciansCanReadEverything {
     description: "Allow all participants read access to all resources"
-    participant: "org.example.basic.SampleParticipant"
+    participant: "org.example.basic.Technician"
     operation: READ
     resource: "org.example.basic.*"
     action: ALLOW
 }
 
-rule EverybodyCanSubmitTransactions {
-    description: "Allow all participants to submit transactions"
-    participant: "org.example.basic.SampleParticipant"
+rule ClientsCanSubmitTickets {
+    description: "Allow all clients to submit tickets"
+    participant: "org.example.basic.Client"
     operation: CREATE
-    resource: "org.example.basic.SampleTransaction"
+    resource: "org.example.basic.openNewTicket"
     action: ALLOW
 }
 
 rule OwnerHasFullAccessToTheirAssets {
     description: "Allow all participants full access to their assets"
-    participant(p): "org.example.basic.SampleParticipant"
+    participant(p): "org.example.basic.Technician"
     operation: ALL
-    resource(r): "org.example.basic.SampleAsset"
+    resource(r): "org.example.basic.Ticket"
     condition: (r.owner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }

@@ -24,31 +24,38 @@ asset Ticket identified by ticketId {
   o DateTime created
   o DateTime updated
   o DateTime closed
-  o String status
   o String description
 }
 
-participant Technician identified by technicianId {
-  o String technicianId
-  o String firstName
-  o String lastName
-}
-
-participant Client identified by email {
+abstract participant Person identified by email {
   o String email
   o String firstName
   o String lastName
 }
 
-transaction openNewTicket {
-  --> Ticket asset
-  --> Client participant
-  o DateTime openTime
-  o String details
+participant Technician extends Person {
+  
 }
 
-event SampleEvent {
-  --> Ticket asset
-  o String oldValue
-  o String newValue
+participant Client extends Person {
+  
 }
+
+enum ticketStatus {
+  o OPEN
+  o UPDATED
+  o CLOSED
+}
+
+// transaction openNewTicket {
+//   --> Ticket asset
+//   --> Client participant
+//   o DateTime openTime
+//   o String details
+// }
+
+// event SampleEvent {
+//   --> Ticket asset
+//   o String oldValue
+//   o String newValue
+// }

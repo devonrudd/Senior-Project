@@ -21,10 +21,9 @@ asset Ticket identified by ticketId {
   o String ticketId
   --> Technician owner
   --> Client creator
-  o DateTime created
-  o DateTime updated
-  o DateTime closed
+  o String subject
   o String description
+  o TicketStatus status
 }
 
 abstract participant Person identified by email {
@@ -41,7 +40,7 @@ participant Client extends Person {
   
 }
 
-enum ticketStatus {
+enum TicketStatus {
   o OPEN
   o UPDATED
   o CLOSED

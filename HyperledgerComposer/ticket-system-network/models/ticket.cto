@@ -34,12 +34,10 @@ participant Technician identified by technicianId {
   o String lastName
 }
 
-participant Client identified by clientId {
-  o String clientId
+participant Client identified by email {
+  o String email
   o String firstName
   o String lastName
-//  o String email regex=/\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/
-//  o String email regex=/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/
 }
 
 transaction openNewTicket {

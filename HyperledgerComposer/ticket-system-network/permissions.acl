@@ -18,7 +18,7 @@
 rule TechniciansCanReadEverything {
     description: "Allow all Technicians read access to all resources"
     participant: "org.openticket.Technician"
-    operation: READ, UPDATE
+    operation: UPDATE
     resource: "org.openticket.*"
     action: ALLOW
 }

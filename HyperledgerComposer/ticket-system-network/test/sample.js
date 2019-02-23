@@ -16,7 +16,7 @@
 
 /**
  * Sample transaction processor function.
- * @param {org.example.basic.openNewTicket} tx The sample transaction instance.
+ * @param {org.openticket.openNewTicket} tx The sample transaction instance.
  * @transaction
  */
 async function openNewTicket(tx) {  // eslint-disable-line no-unused-vars
@@ -28,12 +28,12 @@ async function openNewTicket(tx) {  // eslint-disable-line no-unused-vars
     tx.asset.status = "OPEN";
 
     // Get the asset registry for the asset.
-    const assetRegistry = await getAssetRegistry('org.example.basic.Ticket');
+    const assetRegistry = await getAssetRegistry('org.openticket.Ticket');
     // Update the asset in the asset registry.
     await assetRegistry.update(tx.asset);
 
     // Emit an event for the modified asset.
-    let event = getFactory().newEvent('org.example.basic', 'SampleEvent');
+    let event = getFactory().newEvent('org.openticket', 'SampleEvent');
     event.asset = tx.asset;
     event.oldValue = oldValue;
     event.newValue = tx.newValue;

@@ -16,26 +16,26 @@
  * Sample access control list.
  */
 rule TechniciansCanReadEverything {
-    description: "Allow all participants read access to all resources"
-    participant: "org.example.basic.Technician"
-    operation: READ
-    resource: "org.example.basic.*"
+    description: "Allow all Technicians read access to all resources"
+    participant: "org.openticket.Technician"
+    operation: READ, UPDATE
+    resource: "org.openticket.*"
     action: ALLOW
 }
 
 rule ClientsCanSubmitTickets {
     description: "Allow all clients to submit tickets"
-    participant: "org.example.basic.Client"
+    participant: "org.openticket.Client"
     operation: CREATE
-    resource: "org.example.basic.openNewTicket"
+    resource: "org.openticket.*"
     action: ALLOW
 }
 
 rule OwnerHasFullAccessToTheirAssets {
     description: "Allow all participants full access to their assets"
-    participant(p): "org.example.basic.Technician"
+    participant(p): "org.openticket.Technician"
     operation: ALL
-    resource(r): "org.example.basic.Ticket"
+    resource(r): "org.openticket.Ticket"
     condition: (r.owner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }

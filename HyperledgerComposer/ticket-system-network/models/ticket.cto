@@ -15,7 +15,7 @@
 /**
  * Sample business network definition.
  */
-namespace org.example.basic
+namespace org.openticket
 
 asset Ticket identified by ticketId {
   o String ticketId
@@ -26,17 +26,17 @@ asset Ticket identified by ticketId {
   o String description
 }
 
-abstract participant Person identified by email {
+abstract participant User identified by email {
   o String email
   o String firstName
   o String lastName
 }
 
-participant Technician extends Person {
+participant Technician extends User {
   
 }
 
-participant Client extends Person {
+participant Client extends User {
   
 }
 

@@ -15,7 +15,7 @@
 /**
  * Sample business network definition.
  */
-namespace org.example.basic
+namespace org.openticket
 
 asset Ticket identified by ticketId {
   o String ticketId
@@ -49,6 +49,8 @@ enum TicketStatus {
 
 transaction SetupSystem {
 }
+
+
 
 // event SampleEvent {
 //   --> Ticket asset

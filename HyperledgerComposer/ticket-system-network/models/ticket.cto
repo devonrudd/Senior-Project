@@ -19,11 +19,14 @@ namespace org.example.basic
 
 asset Ticket identified by ticketId {
   o String ticketId
-  --> Technician owner
-  --> Client creator
   o TicketStatus status
   o String subject
   o String description
+  o DateTime openTime
+  o DateTime updateTime
+  o DateTime closedTime
+  --> Technician owner
+  --> Client creator
 }
 
 abstract participant Person identified by email {
@@ -47,10 +50,7 @@ enum TicketStatus {
 }
 
 transaction SetupSystem {
-  --> Ticket asset
-  --> Client participant
-  o DateTime openTime
-  o String details
+
 }
 
   // event SampleEvent {

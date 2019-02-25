@@ -24,9 +24,9 @@ asset Ticket identified by ticketId {
   o String description
   o DateTime openTime
   o DateTime updateTime
-  o DateTime closedTime
-  --> Technician owner
-  --> Client creator
+  // o DateTime closedTime
+  --> Technician techinician
+  --> Client client
 }
 
 abstract participant Person identified by email {

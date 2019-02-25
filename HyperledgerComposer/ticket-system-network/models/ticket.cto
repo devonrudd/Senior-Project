@@ -35,12 +35,10 @@ abstract participant Person identified by email {
   o String lastName
 }
 
-participant Technician extends Person {
-  
+participant Technician extends Person {  
 }
 
-participant Client extends Person {
-  
+participant Client extends Person {  
 }
 
 enum TicketStatus {
@@ -50,11 +48,10 @@ enum TicketStatus {
 }
 
 transaction SetupSystem {
-
 }
 
-  // event SampleEvent {
-  //   --> Ticket asset
-  //   o String oldValue
-  //   o String newValue
-  // }
+// event SampleEvent {
+//   --> Ticket asset
+//   o String oldValue
+//   o String newValue
+// }

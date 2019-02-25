@@ -1,0 +1,1 @@
+composer archive create --sourceType dir --sourceName . -a ./dist/ticket-system-network

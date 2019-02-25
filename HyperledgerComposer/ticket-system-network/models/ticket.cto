@@ -46,12 +46,12 @@ participant Client extends Person {
   o CLOSED
   }
 
-  // transaction openNewTicket {
-  //   --> Ticket asset
-  //   --> Client participant
-  //   o DateTime openTime
-  //   o String details
-  // }
+  transaction SetupSystem {
+    --> Ticket asset
+    --> Client participant
+    o DateTime openTime
+    o String details
+  }
 
   // event SampleEvent {
   //   --> Ticket asset

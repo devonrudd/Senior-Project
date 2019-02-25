@@ -15,27 +15,12 @@
 /* global getAssetRegistry getFactory emit */
 
 /**
- * Sample transaction processor function.
- * @param {org.openticket.SampleTransaction} tx The sample transaction instance.
+ * This is the ticket system setup. It will setup the initial ticket system.
+ * @param {org.openticket.SetupSystem} setupSystem
  * @transaction
  */
-async function sampleTransaction(tx) {  // eslint-disable-line no-unused-vars
 
-    // Save the old value of the asset.
-    const oldValue = tx.asset.value;
-
-    // Update the asset with the new value.
-    tx.asset.value = tx.newValue;
-
-    // Get the asset registry for the asset.
-    const assetRegistry = await getAssetRegistry('org.openticket.SampleAsset');
-    // Update the asset in the asset registry.
-    await assetRegistry.update(tx.asset);
-
-    // Emit an event for the modified asset.
-    let event = getFactory().newEvent('org.openticket', 'SampleEvent');
-    event.asset = tx.asset;
-    event.oldValue = oldValue;
-    event.newValue = tx.newValue;
-    emit(event);
-}
+ function setupSystem(setupSystem) {
+    var factory = getFactory();
+    
+ }

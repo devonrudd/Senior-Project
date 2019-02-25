@@ -46,6 +46,22 @@
     ticket.openTime = now;
     ticket.update = now;
 
-    // Update Network
+    // Update Network   
+    return getParticipantRegistry(NS + '.Technician')
+        .then(function (techRegistry){
+            return techRegistry.addAll([tech]);
+        })
+        .then(function(){
+            return getParticipantRegistry(NS + '.Client');
+        })
+        .then(function(clientRegistry){
+            return clientRegistry.addAll([client]);
+        })
+        .then(function(){
+            return getAssetRegistry(NS + '.Ticket');
+        })
+        .then(function(ticketRegistry){
+            return ticketRegistry.addAll([ticket]);
+        })
 
  }

@@ -37,14 +37,14 @@
 
     // Create Ticket
     var ticket = factory.newResource(NS, 'Ticket', 'TICK_001');
-    ticket.status = 'OPEN'
-    ticket.subject = 'Example Ticket'
-    ticket.description = 'This is your first ticket. You will see the body of the email received in this section.'
+    ticket.status = 'OPEN';
+    ticket.subject = 'Example Ticket';
+    ticket.description = 'This is your first ticket. You will see the body of the email received in this section.';
     ticket.tech = factory.newRelationship(NS, 'Technician', 'support@org.com');
     ticket.client = factory.newRelationship(NS, 'Client', 'client@org.com');
     var now = setupSystem.timestamp;
-    ticket.openTime = now
-    ticket.update = now
+    ticket.openTime = now;
+    ticket.update = now;
 
     // Update Network
 

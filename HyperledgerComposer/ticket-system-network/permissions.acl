@@ -16,7 +16,7 @@
  * Sample access control list.
  */
 rule TechniciansCanReadEverything {
-    description: "Allow all Technicians read access to all resources"
+    description: "Allow all Technicians access to all resources"
     participant: "org.openticket.Technician"
     operation: UPDATE
     resource: "org.openticket.*"

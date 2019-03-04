@@ -50,6 +50,18 @@ enum TicketStatus {
 transaction SetupSystem {
 }
 
+transaction CreateTicket {
+}
+
+transaction UpdateTicket {
+}
+
+transaction CloseTicket {
+}
+
+transaction AssignTicket {
+}
+
 
 
 // event SampleEvent {

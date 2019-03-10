@@ -65,3 +65,70 @@
         })
 
  }
+
+
+/**
+ * Creates a new ticket in the system.
+ * @param {org.openticket.CreateTicket} createTicket
+ * @transaction
+ */
+// Work on this
+function createTicket(createTicket) {
+    var factory = getFactory();
+    var NS = 'org.openticket';
+
+    var ticket = factory.newResource(NS, 'Ticket', 'TICK_001');
+    ticket.status = 'OPEN';
+    ticket.subject = '';
+    ticket.description = '';
+    ticket.technician = factory.newRelationship(NS, 'Technician', '');
+    ticket.client = factory.newRelationship(NS, 'Client', '');
+    var now = setupSystem.timestamp;
+    ticket.openTime = now;
+    ticket.updateTime = now;
+
+    return
+}
+
+
+/**
+ * Updates a selected ticket in the system.
+ * @param {org.openticket.UpdateTicket} updateTicket
+ * @transaction
+ */
+// Work on this.
+function updateTicket(updateTicket) {
+    var factory = getFactory();
+    var NS = 'org.openticket';
+
+    var ticket = factory.getAssetRegistry();
+    ticket.status = 'OPEN';
+    ticket.subject = '';
+    ticket.description = '';
+    ticket.technician = factory.newRelationship(NS, 'Technician', '');
+    ticket.client = factory.newRelationship(NS, 'Client', '');
+    var now = setupSystem.timestamp;
+    ticket.updateTime = now;
+
+    return
+}
+
+// Updates the network
+function updateNetwork(tech, client, ticket) {
+    return getParticipantRegistry(NS + '.Technician')
+        .then(function (techRegistry) {
+            return techRegistry.addAll([tech]);
+        })
+        .then(function () {
+            return getParticipantRegistry(NS + '.Client');
+        })
+        .then(function (clientRegistry) {
+            return clientRegistry.addAll([client]);
+        })
+        .then(function () {
+            return getAssetRegistry(NS + '.Ticket');
+        })
+        .then(function (ticketRegistry) {
+            return ticketRegistry.addAll([ticket]);
+        })
+}

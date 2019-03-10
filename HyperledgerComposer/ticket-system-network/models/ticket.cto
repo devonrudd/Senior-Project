@@ -17,6 +17,7 @@
  */
 namespace org.openticket
 
+// Assets
 asset Ticket identified by ticketId {
   o String ticketId
   o TicketStatus status
@@ -29,10 +30,16 @@ asset Ticket identified by ticketId {
   --> Client client
 }
 
+
+// Participants
 abstract participant Person identified by email {
   o String email
   o String firstName
   o String lastName
+}
+
+abstract participant Reporting identified by reportType {
+  o String reportType
 }
 
 participant Technician extends Person {  
@@ -41,12 +48,45 @@ participant Technician extends Person {
 participant Client extends Person {  
 }
 
+participant AllTimeReport extends Reporting {
+  o ReportingType ALLTIME
+}
+
+participant YearlyReport extends Reporting {
+  o ReportingType YEARLY
+}
+
+participant MonthlyReport extends Reporting {
+  o ReportingType MONTHLY
+}
+
+participant WeeklyReport extends Reporting {
+  o ReportingType WEEKLY
+}
+
+participant DailyReport extends Reporting {
+  o ReportingType DAILY
+}
+
+
+// Enumerations
 enum TicketStatus {
   o OPEN
   o UPDATED
   o CLOSED
 }
 
+enum ReportingType {
+  o ALLTIME
+  o YEARLY
+  o QUARTERLY
+  o MONTHLY
+  o WEEKLY
+  o DAILY
+}
+
+
+// Transactions
 transaction SetupSystem {
 }
 
@@ -63,7 +103,7 @@ transaction AssignTicket {
 }
 
 
-
+// Events
 // event SampleEvent {
 //   --> Ticket asset
 //   o String oldValue

@@ -93,42 +93,44 @@ function createTicket(createTicket) {
 
 /**
  * Updates a selected ticket in the system.
- * @param {org.openticket.UpdateTicket} updateTicket
+ * @param {org.openticket.AddNote} addNote
  * @transaction
  */
 // Work on this.
-function updateTicket(updateTicket) {
-    var factory = getFactory();
-    var NS = 'org.openticket';
+function AddNote(addNote) {
+    var ticket = addNote.ticket;
+    var newNote = addNote.note;
 
-    var ticket = factory.getAssetRegistry();
-    ticket.status = 'OPEN';
-    ticket.subject = '';
-    ticket.description = '';
-    ticket.technician = factory.newRelationship(NS, 'Technician', '');
-    ticket.client = factory.newRelationship(NS, 'Client', '');
-    var now = setupSystem.timestamp;
-    ticket.updateTime = now;
+    if (ticket.notes){
+        ticket.notes.push(newNote);
+    } else {
+        ticket.notes = [newNote]
+    }
 
-    return
+    console.log('Note "' + newNote + ' added to ticket ' + ticket + '.');
+
+    return getAssetRegistry('org.openticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
 }
 
 // Updates the network
-function updateNetwork(tech, client, ticket) {
-    return getParticipantRegistry(NS + '.Technician')
-        .then(function (techRegistry) {
-            return techRegistry.addAll([tech]);
-        })
-        .then(function () {
-            return getParticipantRegistry(NS + '.Client');
-        })
-        .then(function (clientRegistry) {
-            return clientRegistry.addAll([client]);
-        })
-        .then(function () {
-            return getAssetRegistry(NS + '.Ticket');
-        })
-        .then(function (ticketRegistry) {
-            return ticketRegistry.addAll([ticket]);
-        })
-}
+// function updateNetwork(tech, client, ticket) {
+//     return getParticipantRegistry(NS + '.Technician')
+//         .then(function (techRegistry) {
+//             return techRegistry.addAll([tech]);
+//         })
+//         .then(function () {
+//             return getParticipantRegistry(NS + '.Client');
+//         })
+//         .then(function (clientRegistry) {
+//             return clientRegistry.addAll([client]);
+//         })
+//         .then(function () {
+//             return getAssetRegistry(NS + '.Ticket');
+//         })
+//         .then(function (ticketRegistry) {
+//             return ticketRegistry.addAll([ticket]);
+//         })
+// }

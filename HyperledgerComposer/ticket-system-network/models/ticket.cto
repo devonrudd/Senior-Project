@@ -102,7 +102,8 @@ transaction SetupSystem {
 transaction CreateTicket {
 }
 
-transaction UpdateTicket extends TicketTransaction {
+transaction AddNote extends TicketTransaction {
+  o String note
 }
 
 transaction CloseTicket extends TicketTransaction {

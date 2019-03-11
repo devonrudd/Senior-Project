@@ -27,7 +27,6 @@ abstract asset Reporting identified by reportType {
 }
 
 asset AllTimeReport extends Reporting {
-  o ReportingType ALLTIME
 }
 
 // asset YearlyReport extends Reporting {

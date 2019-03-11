@@ -71,6 +71,9 @@
         .then(function(ticketRegistry){
             return ticketRegistry.addAll([ticket]);
         })
+        .then(function(){
+            return getAssetRegistry(NS + '.AllTimeReport');
+        })
         .then(function(allTimeReportRegistry){
             return allTimeReportRegistry.addAll([allTimeReport])
         })

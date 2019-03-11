@@ -77,17 +77,21 @@ function createTicket(createTicket) {
     var factory = getFactory();
     var NS = 'org.openticket';
 
-    var ticket = factory.newResource(NS, 'Ticket', 'TICK_001');
-    ticket.status = 'OPEN';
-    ticket.subject = '';
-    ticket.description = '';
-    ticket.technician = factory.newRelationship(NS, 'Technician', '');
-    ticket.client = factory.newRelationship(NS, 'Client', '');
+    var ticket = factory.newResource(NS, 'Ticket', createTicket.ticketId);
+    ticket.status = createTicket.status;
+    ticket.subject = createTicket.subject;
+    ticket.description = createTicket.description;
+    ticket.notes = createTicket.notes;
+    ticket.technician = factory.newRelationship(NS, 'Technician', createTicket.technician);
+    ticket.client = factory.newRelationship(NS, 'Client', createTicket.client);
     var now = setupSystem.timestamp;
     ticket.openTime = now;
     ticket.updateTime = now;
 
-    return
+    return getAssetRegistry(NS)
+        .then(function(ticketRegistry){
+            return ticketRegistry.addAll([ticket])
+        })
 }
 
 

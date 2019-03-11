@@ -100,6 +100,15 @@ transaction SetupSystem {
 }
 
 transaction CreateTicket {
+  o String ticketId
+  o TicketStatus status
+  o String subject
+  o String description
+  o String[] notes
+  o DateTime openTime
+  o DateTime updateTime
+  --> Technician techinician
+  --> Client client
 }
 
 transaction AddNote extends TicketTransaction {

@@ -17,7 +17,7 @@
  */
 namespace org.openticket
 
-// Assets
+// -- Assets --
 abstract asset Reporting identified by reportType {
   o String reportType
   o Long ticketsClosed
@@ -59,7 +59,7 @@ asset Ticket identified by ticketId {
 }
 
 
-// Participants
+// -- Participants --
 abstract participant Person identified by email {
   o String email
   o String firstName
@@ -73,7 +73,7 @@ participant Client extends Person {
 }
 
 
-// Enumerations
+// -- Enumerations --
 enum TicketStatus {
   o OPEN
   o UPDATED
@@ -90,7 +90,7 @@ enum ReportingType {
 }
 
 
-// Transactions
+// -- Transactions --
 abstract transaction TicketTransaction {
   --> Ticket ticket
   --> AllTimeReport allTimeReport
@@ -127,7 +127,7 @@ transaction ChangeClient extends TicketTransaction {
   --> Client client
 }
 
-// Events
+// -- Events --
 // event SampleEvent {
 //   --> Ticket asset
 //   o String oldValue

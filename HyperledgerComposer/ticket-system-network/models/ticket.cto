@@ -91,24 +91,27 @@ enum ReportingType {
 
 
 // Transactions
+abstract transaction TicketTransaction {
+  --> Ticket ticket
+}
+
 transaction SetupSystem {
 }
 
 transaction CreateTicket {
 }
 
-transaction UpdateTicket {
+transaction UpdateTicket extends TicketTransaction {
 }
 
-transaction CloseTicket {
-  -->
+transaction CloseTicket extends TicketTransaction {
 }
 
-transaction AssignTicket {
+transaction AssignTicket extends TicketTransaction{
   --> Technician techinician
 }
 
-transaction ChangeClient {
+transaction ChangeClient extends TicketTransaction {
   --> Client client
 }
 

@@ -18,6 +18,34 @@
 namespace org.openticket
 
 // Assets
+abstract asset Reporting identified by reportType {
+  o String reportType
+  o Long ticketsClosed
+  o Long ticketsOpened
+  o String avgTimeOpen
+  o String avgTimeUpdated
+}
+
+asset AllTimeReport extends Reporting {
+  o ReportingType ALLTIME
+}
+
+asset YearlyReport extends Reporting {
+  o ReportingType YEARLY
+}
+
+asset MonthlyReport extends Reporting {
+  o ReportingType MONTHLY
+}
+
+asset WeeklyReport extends Reporting {
+  o ReportingType WEEKLY
+}
+
+asset DailyReport extends Reporting {
+  o ReportingType DAILY
+}
+
 asset Ticket identified by ticketId {
   o String ticketId
   o TicketStatus status
@@ -39,38 +67,10 @@ abstract participant Person identified by email {
   o String lastName
 }
 
-abstract participant Reporting identified by reportType {
-  o String reportType
-  o Long ticketsClosed
-  o Long ticketsOpened
-  o String avgTimeOpen
-  o String avgTimeUpdated
-}
-
 participant Technician extends Person {  
 }
 
 participant Client extends Person {  
-}
-
-participant AllTimeReport extends Reporting {
-  o ReportingType ALLTIME
-}
-
-participant YearlyReport extends Reporting {
-  o ReportingType YEARLY
-}
-
-participant MonthlyReport extends Reporting {
-  o ReportingType MONTHLY
-}
-
-participant WeeklyReport extends Reporting {
-  o ReportingType WEEKLY
-}
-
-participant DailyReport extends Reporting {
-  o ReportingType DAILY
 }
 
 

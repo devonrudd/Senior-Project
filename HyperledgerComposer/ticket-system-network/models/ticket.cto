@@ -30,21 +30,21 @@ asset AllTimeReport extends Reporting {
   o ReportingType ALLTIME
 }
 
-asset YearlyReport extends Reporting {
-  o ReportingType YEARLY
-}
+// asset YearlyReport extends Reporting {
+//   o ReportingType YEARLY
+// }
 
-asset MonthlyReport extends Reporting {
-  o ReportingType MONTHLY
-}
+// asset MonthlyReport extends Reporting {
+//   o ReportingType MONTHLY
+// }
 
-asset WeeklyReport extends Reporting {
-  o ReportingType WEEKLY
-}
+// asset WeeklyReport extends Reporting {
+//   o ReportingType WEEKLY
+// }
 
-asset DailyReport extends Reporting {
-  o ReportingType DAILY
-}
+// asset DailyReport extends Reporting {
+//   o ReportingType DAILY
+// }
 
 asset Ticket identified by ticketId {
   o String ticketId
@@ -55,7 +55,7 @@ asset Ticket identified by ticketId {
   o DateTime openTime
   o DateTime updateTime
   // o DateTime closedTime
-  --> Technician techinician
+  --> Technician technician
   --> Client client
 }
 

@@ -40,6 +40,7 @@
     ticket.status = 'OPEN';
     ticket.subject = 'Example Ticket';
     ticket.description = 'This is your first ticket. You will see the body of the email received in this section.';
+    ticket.notes = [];
     ticket.technician = factory.newRelationship(NS, 'Technician', 'support@org.com');
     ticket.client = factory.newRelationship(NS, 'Client', 'client@org.com');
     var now = setupSystem.timestamp;
@@ -69,6 +70,9 @@
         })
         .then(function(ticketRegistry){
             return ticketRegistry.addAll([ticket]);
+        })
+        .then(function(allTimeReportRegistry){
+            return allTimeReportRegistry.addAll([allTimeReport])
         })
 
  }

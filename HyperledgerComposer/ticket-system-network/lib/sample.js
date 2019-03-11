@@ -107,30 +107,12 @@ function AddNote(addNote) {
         ticket.notes = [newNote]
     }
 
-    console.log('Note "' + newNote + ' added to ticket ' + ticket + '.');
+    var now = addNote.timestamp
+    ticket.updateTime = now;
+    console.log('[' + now + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
 
     return getAssetRegistry('org.openticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
         })
 }
-
-// Updates the network
-// function updateNetwork(tech, client, ticket) {
-//     return getParticipantRegistry(NS + '.Technician')
-//         .then(function (techRegistry) {
-//             return techRegistry.addAll([tech]);
-//         })
-//         .then(function () {
-//             return getParticipantRegistry(NS + '.Client');
-//         })
-//         .then(function (clientRegistry) {
-//             return clientRegistry.addAll([client]);
-//         })
-//         .then(function () {
-//             return getAssetRegistry(NS + '.Ticket');
-//         })
-//         .then(function (ticketRegistry) {
-//             return ticketRegistry.addAll([ticket]);
-//         })
-// }

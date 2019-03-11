@@ -23,6 +23,7 @@ asset Ticket identified by ticketId {
   o TicketStatus status
   o String subject
   o String description
+  o String[] notes
   o DateTime openTime
   o DateTime updateTime
   // o DateTime closedTime

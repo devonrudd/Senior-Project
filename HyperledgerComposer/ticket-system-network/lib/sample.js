@@ -46,6 +46,13 @@
     ticket.openTime = now;
     ticket.updateTime = now;
 
+    // Add Reporting
+    var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'All Time');
+    allTimeReport.ticketsClosed = 0;
+    allTimeReport.ticketsOpened = 0;
+    allTimeReport.avgTimeOpen = 'N/A';
+    allTimeReport.avgTimeUpdated = 'N/A';
+
     // Update Network   
     return getParticipantRegistry(NS + '.Technician')
         .then(function (techRegistry){
@@ -72,7 +79,7 @@
  * @param {org.openticket.CreateTicket} createTicket
  * @transaction
  */
-// Work on this
+
 function createTicket(createTicket) {
     var factory = getFactory();
     var NS = 'org.openticket';
@@ -87,16 +94,24 @@ function createTicket(createTicket) {
     var now = setupSystem.timestamp;
     ticket.openTime = now;
     ticket.updateTime = now;
+    console.log('[' + now +']: Created ticket ' + ticket.ticketId + '.');
+
+    // Reporting
+    var allTimeReport = createTicket.allTimeReport;
+    allTimeReport.ticketsOpened++
 
     return getAssetRegistry(NS)
         .then(function(ticketRegistry){
-            return ticketRegistry.addAll([ticket])
+            return ticketRegistry.addAll([ticket]);
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
         })
 }
 
 
 /**
- * Updates a selected ticket in the system.
+ * Adds a note to a selected ticket in the system.
  * @param {org.openticket.AddNote} addNote
  * @transaction
  */
@@ -118,5 +133,22 @@ function AddNote(addNote) {
     return getAssetRegistry('org.openticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
+        })
+}
+
+
+/**
+ * Closes a selected ticket in the system.
+ * @param {org.openticket.CloseTicket} closeTicket
+ * @transaction
+ */
+
+function CloseTicket(closeTicket) {
+    return getAssetRegistry('org.openticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+        .then(function(reportingRegistry){
+            return
         })
 }

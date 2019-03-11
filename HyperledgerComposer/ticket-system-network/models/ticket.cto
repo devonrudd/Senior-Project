@@ -94,6 +94,7 @@ enum ReportingType {
 // Transactions
 abstract transaction TicketTransaction {
   --> Ticket ticket
+  --> AllTimeReport allTimeReport
 }
 
 transaction SetupSystem {
@@ -109,6 +110,7 @@ transaction CreateTicket {
   o DateTime updateTime
   --> Technician techinician
   --> Client client
+  --> AllTimeReport allTimeReport
 }
 
 transaction AddNote extends TicketTransaction {

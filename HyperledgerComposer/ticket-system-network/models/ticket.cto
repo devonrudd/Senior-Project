@@ -40,6 +40,10 @@ abstract participant Person identified by email {
 
 abstract participant Reporting identified by reportType {
   o String reportType
+  o Long ticketsClosed
+  o Long ticketsOpened
+  o String avgTimeOpen
+  o String avgTimeUpdated
 }
 
 participant Technician extends Person {  
@@ -97,11 +101,16 @@ transaction UpdateTicket {
 }
 
 transaction CloseTicket {
+  -->
 }
 
 transaction AssignTicket {
+  --> Technician techinician
 }
 
+transaction ChangeClient {
+  --> Client client
+}
 
 // Events
 // event SampleEvent {

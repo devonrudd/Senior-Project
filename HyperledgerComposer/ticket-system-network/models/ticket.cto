@@ -22,6 +22,8 @@ abstract asset Reporting identified by reportType {
   o String reportType
   o Long ticketsClosed
   o Long ticketsOpened
+  o String[] openTickets
+  o String[] closedTickets
   o String avgTimeOpen
   o String avgTimeUpdated
 }

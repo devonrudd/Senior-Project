@@ -20,7 +20,7 @@
  * @transaction
  */
 
- function setupSystem(setupSystem) {
+function setupSystem(setupSystem) {
 
     var factory = getFactory();
     var NS = 'org.openticket';
@@ -35,6 +35,15 @@
     client.firstName = 'Chester';
     client.lastName = 'Tester';
 
+    // Add Reporting
+    var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'All Time');
+    allTimeReport.ticketsClosed = 0;
+    allTimeReport.ticketsOpened = 0;
+    allTimeReport.avgTimeOpen = 'N/A';
+    allTimeReport.avgTimeUpdated = 'N/A';
+    allTimeReport.openTickets = [];
+    allTimeReport.closedTickets = [];
+
     // Create Ticket
     var ticket = factory.newResource(NS, 'Ticket', 'TICK_001');
     ticket.status = 'OPEN';
@@ -46,14 +55,7 @@
     var now = setupSystem.timestamp;
     ticket.openTime = now;
     ticket.updateTime = now;
-
-    // Add Reporting
-    var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'All Time');
-    allTimeReport.ticketsClosed = 0;
-    allTimeReport.ticketsOpened = 0;
-    allTimeReport.avgTimeOpen = 'N/A';
-    allTimeReport.avgTimeUpdated = 'N/A';
-
+   
     // Update Network   
     return getParticipantRegistry(NS + '.Technician')
         .then(function (techRegistry){
@@ -71,10 +73,10 @@
         .then(function(ticketRegistry){
             return ticketRegistry.addAll([ticket]);
         })
-        .then(function(){
-            return getAssetRegistry(NS + '.AllTimeReport');
-        })
-        .then(function(allTimeReportRegistry){
+   		.then(function(){
+      		return getAssetRegistry(NS + '.AllTimeReport');
+    	})
+		.then(function(allTimeReportRegistry){
             return allTimeReportRegistry.addAll([allTimeReport])
         })
 
@@ -91,7 +93,7 @@ function createTicket(createTicket) {
     var factory = getFactory();
     var NS = 'org.openticket';
 
-    var ticket = factory.newResource(NS, 'Ticket', createTicket.ticketId);
+    var ticket = factory.newResource(NS, 'Ticket', 'Tick_002');
     ticket.status = createTicket.status;
     ticket.subject = createTicket.subject;
     ticket.description = createTicket.description;
@@ -101,11 +103,12 @@ function createTicket(createTicket) {
     var now = setupSystem.timestamp;
     ticket.openTime = now;
     ticket.updateTime = now;
-    console.log('[' + now +']: Created ticket ' + ticket.ticketId + '.');
+    console.log('[' + now + ']: Created ticket ' + ticket.ticketId + '.');
 
     // Reporting
-    var allTimeReport = createTicket.allTimeReport;
-    allTimeReport.ticketsOpened++
+    var allTimeReport = "resource:org.openticket.AllTimeReport#AllTime";
+    allTimeReport.ticketsOpened++;
+    // allTimeReport.openTickets.push(ticket.ticketId);
 
     return getAssetRegistry(NS)
         .then(function(ticketRegistry){

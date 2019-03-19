@@ -24,6 +24,8 @@ abstract asset Reporting identified by reportType {
   o Long ticketsOpened
   o String avgTimeOpen
   o String avgTimeUpdated
+  o String[] openTickets
+  o String[] closedTickets
 }
 
 asset AllTimeReport extends Reporting {
@@ -80,15 +82,6 @@ enum TicketStatus {
   o CLOSED
 }
 
-enum ReportingType {
-  o ALLTIME
-  o YEARLY
-  o QUARTERLY
-  o MONTHLY
-  o WEEKLY
-  o DAILY
-}
-
 
 // -- Transactions --
 abstract transaction TicketTransaction {
@@ -100,16 +93,12 @@ transaction SetupSystem {
 }
 
 transaction CreateTicket {
-  o String ticketId
   o TicketStatus status
   o String subject
   o String description
-  o String[] notes
-  o DateTime openTime
-  o DateTime updateTime
+  o String[] notes optional
   --> Technician techinician
   --> Client client
-  --> AllTimeReport allTimeReport
 }
 
 transaction AddNote extends TicketTransaction {
@@ -132,4 +121,14 @@ transaction ChangeClient extends TicketTransaction {
 //   --> Ticket asset
 //   o String oldValue
 //   o String newValue
+// }
+
+
+// {
+//   "$class": "org.openticket.CreateTicket",
+//   "status": "OPEN",
+//   "subject": "6jkrtwlk",
+//   "description": "jtklrw",
+//   "techinician": "resource:org.openticket.Technician#support@org.com",
+//   "client": "resource:org.openticket.Client#client@org.com"
 // }

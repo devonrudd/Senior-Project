@@ -126,12 +126,6 @@ function setupSystem(setupSystem) {
 function addNote(addNote) {
     var ticket = addNote.ticket;
     var newNote = addNote.note;
-
-    // if (ticket.notes){
-    //     ticket.notes.push(newNote);
-    // } else {
-    //     ticket.notes = [newNote]
-    // }
     ticket.notes = [newNote];
     ticket.status = "UPDATED";
     ticket.updateTime = addNote.timestamp;
@@ -142,6 +136,28 @@ function addNote(addNote) {
             return ticketRegistry.update(ticket);
         })
 }
+
+
+/**
+ * Adds a note to a selected ticket in the system.
+ * @param {org.openticket.AddReply} addReply
+ * @transaction
+ */
+
+function addReply(addReply) {
+    var ticket = addReply.ticket;
+    var newReply = addReply.reply;
+    ticket.replyThread = [newReply];
+    ticket.status = "UPDATED";
+    ticket.isAnswered = true;
+    ticket.updateTime = addReply.timestamp;
+    // console.log('[' + ticket.updateTime + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
+
+    return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+} 
 
 
 /**
@@ -216,8 +232,5 @@ function closeTicket(closeTicket) {
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
         })
-        // .then(function(reportingRegistry){
-        //     return
-        // })
 }
 

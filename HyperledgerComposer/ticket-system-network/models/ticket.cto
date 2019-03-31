@@ -49,9 +49,11 @@ namespace org.openticket
 
 asset Ticket identified by ticketId {
   o String ticketId
-  o TicketStatus status
+  o TicketStatus status default="OPEN"
+  o Boolean isAnswered default=false
   o String subject
   o String description
+  o String[] replyThread
   o String[] notes
   o DateTime openTime
   o DateTime updateTime optional
@@ -98,6 +100,10 @@ transaction SetupSystem {
 
 transaction AddNote extends TicketTransaction {
   o String note
+}
+
+transaction AddReply extends TicketTransaction {
+  o String reply
 }
 
 transaction AssignTicket extends TicketTransaction{

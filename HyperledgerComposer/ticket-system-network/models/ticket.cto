@@ -18,34 +18,20 @@
 namespace org.openticket
 
 // -- Assets --
-// abstract asset Reporting identified by reportType {
-//   o String reportType
-//   o Long ticketsClosed
-//   o Long ticketsOpened
-//   o String avgTimeOpen
-//   o String avgTimeUpdated
-//   o String[] openTickets
-//   o String[] closedTickets
-// }
+abstract asset Reporting identified by reportType {
+  o String reportType
+  o Long ticketsOpen
+  o Long ticketsUpdated
+  o Long ticketsClosed
+  // o String avgTimeOpen
+  // o String avgTimeUpdated
+  o String[] openTickets
+  o String[] updatedTickets
+  o String[] closedTickets
+}
 
-// asset AllTimeReport extends Reporting {
-// }
-
-// asset YearlyReport extends Reporting {
-//   o ReportingType YEARLY
-// }
-
-// asset MonthlyReport extends Reporting {
-//   o ReportingType MONTHLY
-// }
-
-// asset WeeklyReport extends Reporting {
-//   o ReportingType WEEKLY
-// }
-
-// asset DailyReport extends Reporting {
-//   o ReportingType DAILY
-// }
+asset AllTimeReport extends Reporting {
+}
 
 asset Ticket identified by ticketId {
   o String ticketId
@@ -53,8 +39,8 @@ asset Ticket identified by ticketId {
   o Boolean isAnswered default=false
   o String subject
   o String description
-  o String[] replyThread
-  o String[] notes
+  o String[] replyThread optional
+  o String[] notes optional
   o DateTime openTime
   o DateTime updateTime optional
   o DateTime closedTime optional
@@ -88,15 +74,16 @@ enum TicketStatus {
 // -- Transactions --
 abstract transaction TicketTransaction {
   --> Ticket ticket
-  // --> AllTimeReport allTimeReport
+  --> AllTimeReport allTimeReport
 }
 
 transaction SetupSystem {
 }
 
-// transaction CreateTicket {
-//   o Ticket ticket
-// }
+transaction CreateTicket {
+  o Ticket ticket
+  --> AllTimeReport allTimeReport 
+}
 
 transaction AddNote extends TicketTransaction {
   o String note
@@ -121,21 +108,12 @@ transaction ChangeSubject extends TicketTransaction {
 transaction CloseTicket extends TicketTransaction {
 }
 
-
+// transaction TicketReport {
+// }
 
 // -- Events --
 // event SampleEvent {
 //   --> Ticket asset
 //   o String oldValue
 //   o String newValue
-// }
-
-
-// {
-//   "$class": "org.openticket.CreateTicket",
-//   "status": "OPEN",
-//   "subject": "6jkrtwlk",
-//   "description": "jtklrw",
-//   "techinician": "resource:org.openticket.Technician#support@org.com",
-//   "client": "resource:org.openticket.Client#client@org.com"
 // }

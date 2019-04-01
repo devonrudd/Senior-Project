@@ -14,6 +14,12 @@
 
 /* global getAssetRegistry getFactory emit */
 
+function removeArrayValue(arr, val) {
+    return arr.filter(function(x) {
+        return x != val;
+    })
+}
+
 /**
  * This is the ticket system setup. It will setup the initial ticket system.
  * @param {org.openticket.SetupSystem} setupSystem
@@ -35,17 +41,8 @@ function setupSystem(setupSystem) {
     client.firstName = 'Chester';
     client.lastName = 'Tester';
 
-    // Add Reporting
-    // var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'All Time');
-    // allTimeReport.ticketsClosed = 0;
-    // allTimeReport.ticketsOpened = 0;
-    // allTimeReport.avgTimeOpen = 'N/A';
-    // allTimeReport.avgTimeUpdated = 'N/A';
-    // allTimeReport.openTickets = [];
-    // allTimeReport.closedTickets = [];
-
     // Create Ticket
-    var ticket = factory.newResource(NS, 'Ticket', 'TICK_001');
+    var ticket = factory.newResource(NS, 'Ticket', '0000');
     ticket.status = 'OPEN';
     ticket.subject = 'Example Ticket';
     ticket.description = 'This is your first ticket. You will see the body of the email received in this section.';
@@ -55,6 +52,16 @@ function setupSystem(setupSystem) {
     var now = setupSystem.timestamp;
     ticket.openTime = now;
    
+    // Add Reporting
+    var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'AllTimeReport');
+    allTimeReport.openTickets = ["0000"];
+    allTimeReport.closedTickets = [];
+    allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    allTimeReport.ticketsUpdated = 0;
+    allTimeReport.ticketsClosed = 0;
+    // allTimeReport.avgTimeOpen = 'N/A';
+    // allTimeReport.avgTimeUpdated = 'N/A';
+
     // Update Network   
     return getParticipantRegistry(NS + '.Technician')
         .then(function (techRegistry){
@@ -75,46 +82,48 @@ function setupSystem(setupSystem) {
    		.then(function(){
       		return getAssetRegistry(NS + '.AllTimeReport');
     	})
-		// .then(function(allTimeReportRegistry){
-        //     return allTimeReportRegistry.addAll([allTimeReport])
-        // })
+		.then(function(allTimeReportRegistry){
+            return allTimeReportRegistry.addAll([allTimeReport])
+        })
 
  }
 
 
-// /**
-//  * Creates a new ticket in the system.
-//  * @param {org.openticket.CreateTicket} createTicket
-//  * @transaction
-//  */
+/**
+ * Creates a new ticket in the system.
+ * @param {org.openticket.CreateTicket} createTicket
+ * @transaction
+ */
 
-// function createTicket(createTicket) {
-//     var factory = getFactory();
-//     var NS = 'org.openticket';
+function createTicket(createTicket) {
+    var factory = getFactory();
+    var NS = 'org.openticket';
 
-//     var ticket = factory.newResource(NS, 'Ticket', createTicket.ticketId);
-//     ticket.status = createTicket.ticket.status;
-//     ticket.subject = createTicket.ticket.subject;
-//     ticket.description = createTicket.ticket.description;
-//     ticket.notes = createTicket.ticket.notes;
-//     ticket.technician = factory.newRelationship(NS, 'Technician', createTicket.ticket.technician);
-//     ticket.client = factory.newRelationship(NS, 'Client', createTicket.ticket.client);
-//     ticket.openTime = setupSystem.timestamp;
-//     // console.log('[' + now + ']: Created ticket ' + ticket.ticketId + '.');
+    var ticket = factory.newResource(NS, 'Ticket', createTicket.ticket.ticketId);
+    ticket.status = createTicket.ticket.status;
+    ticket.subject = createTicket.ticket.subject;
+    ticket.description = createTicket.ticket.description;
+    ticket.notes = createTicket.ticket.notes;
+    ticket.technician = factory.newRelationship(NS, 'Technician', createTicket.ticket.technician);
+    ticket.client = factory.newRelationship(NS, 'Client', createTicket.ticket.client);
+    ticket.openTime = createTicket.timestamp;
 
-//     // Reporting
-//     // var allTimeReport = "resource:org.openticket.AllTimeReport#AllTime";
-//     // allTimeReport.ticketsOpened++;
-//     // allTimeReport.openTickets.push(ticket.ticketId);
+    // Reporting
+    var allTimeReport = createTicket.allTimeReport;
+    allTimeReport.openTickets.push(createTicket.ticket.ticketId);
+    allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
 
-//     return getAssetRegistry(NS + '.Ticket')
-//         .then(function(ticketRegistry){
-//             return ticketRegistry.addAll([ticket]);
-//         })
-//         // .then(function(reportingRegistry){
-//         //     return reportingRegistry.update(allTimeReport);
-//         // })
-// }
+    return getAssetRegistry(NS + '.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.addAll([ticket]);
+        })
+        .then(function(){
+            return getAssetRegistry(NS + '.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
+        })
+}
 
 
 /**
@@ -131,9 +140,33 @@ function addNote(addNote) {
     ticket.updateTime = addNote.timestamp;
     // console.log('[' + ticket.updateTime + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
 
+    // Reporting
+    var allTimeReport = addNote.allTimeReport;
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    } 
+    
+    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+        return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+    }
+    allTimeReport.updatedTickets.push(ticket.ticketId); 
+    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
     return getAssetRegistry('org.openticket.Ticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
+        })
+        .then(function(){
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
         })
 }
 
@@ -153,9 +186,33 @@ function addReply(addReply) {
     ticket.updateTime = addReply.timestamp;
     // console.log('[' + ticket.updateTime + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
 
+    // Reporting
+    var allTimeReport = addReply.allTimeReport;
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    } 
+    
+    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+        return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+    }
+    allTimeReport.updatedTickets.push(ticket.ticketId); 
+    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
     return getAssetRegistry('org.openticket.Ticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
+        })
+        .then(function(){
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
         })
 } 
 
@@ -172,9 +229,33 @@ function assignTicket(assignTicket) {
     ticket.status = "UPDATED";
     ticket.updateTime = assignTicket.timestamp;
 
+    // Reporting
+    var allTimeReport = assignTicket.allTimeReport;
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    } 
+    
+    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+        return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+    }
+    allTimeReport.updatedTickets.push(ticket.ticketId); 
+    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
     return getAssetRegistry('org.openticket.Ticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
+        })
+        .then(function(){
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
         })
  }
 
@@ -191,10 +272,34 @@ function changeClient(changeClient) {
     ticket.status = "UPDATED";
     ticket.updateTime = changeClient.timestamp;
 
-    return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
+   // Reporting
+   var allTimeReport = changeClient.allTimeReport;
+   if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+       allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+       allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+   } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+       allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+       allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+   } 
+   
+   if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+       return getAssetRegistry('org.openticket.Ticket')
+       .then(function(ticketRegistry){
+           return ticketRegistry.update(ticket);
+       })
+   }
+   allTimeReport.updatedTickets.push(ticket.ticketId); 
+   allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+   return getAssetRegistry('org.openticket.Ticket')
+       .then(function(ticketRegistry){
+           return ticketRegistry.update(ticket);
+       })
+       .then(function(){
+           return getAssetRegistry('org.openticket.AllTimeReport');
+       })
+       .then(function(reportingRegistry){
+           return reportingRegistry.update(allTimeReport);
+       })
  }
 
 
@@ -210,9 +315,33 @@ function changeSubject(changeSubject) {
     ticket.status = "UPDATED";
     ticket.updateTime = changeClient.timestamp;
 
+    // Reporting
+    var allTimeReport = changeSubject.allTimeReport;
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    } 
+    
+    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+        return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+    }
+    allTimeReport.updatedTickets.push(ticket.ticketId); 
+    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
     return getAssetRegistry('org.openticket.Ticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
+        })
+        .then(function(){
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
         })
 }
 
@@ -228,9 +357,32 @@ function closeTicket(closeTicket) {
     ticket.status = "CLOSED";
     ticket.closedTime = closeTicket.timestamp;
 
+    // Reporting
+    var allTimeReport = closeTicket.allTimeReport;
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.updatedTickets = removeArrayValue(allTimeReport.updatedTickets, ticket.ticketId);
+        allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    }
+    
+    if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        return getAssetRegistry('org.openticket.Ticket')
+        .then(function(ticketRegistry){
+            return ticketRegistry.update(ticket);
+        })
+    }
+    allTimeReport.closedTickets.push(ticket.ticketId); 
+    allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
     return getAssetRegistry('org.openticket.Ticket')
         .then(function(ticketRegistry){
             return ticketRegistry.update(ticket);
         })
+        .then(function(){
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function(reportingRegistry){
+            return reportingRegistry.update(allTimeReport);
+        })
 }
-

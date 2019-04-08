@@ -20,42 +20,30 @@ namespace org.openticket
 // -- Assets --
 abstract asset Reporting identified by reportType {
   o String reportType
+  o Long ticketsOpen
+  o Long ticketsUpdated
   o Long ticketsClosed
-  o Long ticketsOpened
+  // o String avgTimeOpen
+  // o String avgTimeUpdated
   o String[] openTickets
+  o String[] updatedTickets
   o String[] closedTickets
-  o String avgTimeOpen
-  o String avgTimeUpdated
 }
 
 asset AllTimeReport extends Reporting {
 }
 
-// asset YearlyReport extends Reporting {
-//   o ReportingType YEARLY
-// }
-
-// asset MonthlyReport extends Reporting {
-//   o ReportingType MONTHLY
-// }
-
-// asset WeeklyReport extends Reporting {
-//   o ReportingType WEEKLY
-// }
-
-// asset DailyReport extends Reporting {
-//   o ReportingType DAILY
-// }
-
 asset Ticket identified by ticketId {
   o String ticketId
-  o TicketStatus status
+  o TicketStatus status default="OPEN"
+  o Boolean isAnswered default=false
   o String subject
   o String description
-  o String[] notes
+  o String[] replyThread optional
+  o String[] notes optional
   o DateTime openTime
-  o DateTime updateTime
-  // o DateTime closedTime
+  o DateTime updateTime optional
+  o DateTime closedTime optional
   --> Technician technician
   --> Client client
 }
@@ -82,15 +70,6 @@ enum TicketStatus {
   o CLOSED
 }
 
-enum ReportingType {
-  o ALLTIME
-  o YEARLY
-  o QUARTERLY
-  o MONTHLY
-  o WEEKLY
-  o DAILY
-}
-
 
 // -- Transactions --
 abstract transaction TicketTransaction {
@@ -102,32 +81,35 @@ transaction SetupSystem {
 }
 
 transaction CreateTicket {
-  o String ticketId
-  o TicketStatus status
-  o String subject
-  o String description
-  o String[] notes
-  o DateTime openTime
-  o DateTime updateTime
-  --> Technician techinician
-  --> Client client
-  --> AllTimeReport allTimeReport
+  o Ticket ticket
+  --> AllTimeReport allTimeReport 
 }
 
 transaction AddNote extends TicketTransaction {
   o String note
 }
 
-transaction CloseTicket extends TicketTransaction {
+transaction AddReply extends TicketTransaction {
+  o String reply
 }
 
 transaction AssignTicket extends TicketTransaction{
-  --> Technician techinician
+  --> Technician technician
 }
 
 transaction ChangeClient extends TicketTransaction {
   --> Client client
 }
+
+transaction ChangeSubject extends TicketTransaction {
+  o String subject
+}
+
+transaction CloseTicket extends TicketTransaction {
+}
+
+// transaction TicketReport {
+// }
 
 // -- Events --
 // event SampleEvent {

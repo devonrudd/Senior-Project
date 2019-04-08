@@ -15,38 +15,38 @@
 /**
  * Sample access control list.
  */
-rule TechniciansCanReadEverything {
-    description: "Allow all Technicians access to all resources"
-    participant: "org.openticket.Technician"
-    operation: UPDATE
-    resource: "org.openticket.*"
-    action: ALLOW
-}
+// rule TechniciansCanReadEverything {
+//     description: "Allow all Technicians access to all resources"
+//     participant: "org.openticket.Technician"
+//     operation: UPDATE
+//     resource: "org.openticket.*"
+//     action: ALLOW
+// }
 
-rule ClientsCanSubmitTickets {
-    description: "Allow all clients to submit tickets"
-    participant: "org.openticket.Client"
-    operation: CREATE
-    resource: "org.openticket.*"
-    action: ALLOW
-}
+// rule ClientsCanSubmitTickets {
+//     description: "Allow all clients to submit tickets"
+//     participant: "org.openticket.Client"
+//     operation: CREATE
+//     resource: "org.openticket.*"
+//     action: ALLOW
+// }
 
-rule OwnerHasFullAccessToTheirAssets {
-    description: "Allow all participants full access to their assets"
-    participant(p): "org.openticket.Technician"
-    operation: ALL
-    resource(r): "org.openticket.Ticket"
-    condition: (r.owner.getIdentifier() === p.getIdentifier())
-    action: ALLOW
-}
+// rule OwnerHasFullAccessToTheirAssets {
+//     description: "Allow all participants full access to their assets"
+//     participant(p): "org.openticket.Technician"
+//     operation: ALL
+//     resource(r): "org.openticket.Ticket"
+//     condition: (r.owner.getIdentifier() === p.getIdentifier())
+//     action: ALLOW
+// }
 
-rule SystemACL {
-    description: "System ACL to permit all access"
-    participant: "org.hyperledger.composer.system.Participant"
-    operation: ALL
-    resource: "org.hyperledger.composer.system.**"
-    action: ALLOW
-}
+// rule SystemACL {
+//     description: "System ACL to permit all access"
+//     participant: "org.hyperledger.composer.system.Participant"
+//     operation: ALL
+//     resource: "org.hyperledger.composer.system.**"
+//     action: ALLOW
+// }
 
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"

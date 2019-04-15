@@ -20,6 +20,35 @@ function removeArrayValue(arr, val) {
     })
 }
 
+function checkUpdate(allTimeReport, ticket){
+    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    }
+
+    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {
+        return getAssetRegistry('org.openticket.Ticket')
+            .then(function (ticketRegistry) {
+                return ticketRegistry.update(ticket);
+            })
+    }
+    allTimeReport.updatedTickets.push(ticket.ticketId);
+    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    return getAssetRegistry('org.openticket.Ticket')
+        .then(function (ticketRegistry) {
+            return ticketRegistry.update(ticket);
+        })
+        .then(function () {
+            return getAssetRegistry('org.openticket.AllTimeReport');
+        })
+        .then(function (reportingRegistry) {
+            return reportingRegistry.update(allTimeReport);
+        })
+}
+
 /**
  * This is the ticket system setup. It will setup the initial ticket system.
  * @param {org.openticket.SetupSystem} setupSystem
@@ -142,32 +171,33 @@ function addNote(addNote) {
 
     // Reporting
     var allTimeReport = addNote.allTimeReport;
-    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    } 
+    return checkUpdateReport(allTimeReport, ticket);
+    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    // } 
     
-    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-        return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-    }
-    allTimeReport.updatedTickets.push(ticket.ticketId); 
-    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-        .then(function(){
-            return getAssetRegistry('org.openticket.AllTimeReport');
-        })
-        .then(function(reportingRegistry){
-            return reportingRegistry.update(allTimeReport);
-        })
+    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+    //     return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    // }
+    // allTimeReport.updatedTickets.push(ticket.ticketId); 
+    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    // return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    //     .then(function(){
+    //         return getAssetRegistry('org.openticket.AllTimeReport');
+    //     })
+    //     .then(function(reportingRegistry){
+    //         return reportingRegistry.update(allTimeReport);
+    //     })
 }
 
 
@@ -188,32 +218,33 @@ function addReply(addReply) {
 
     // Reporting
     var allTimeReport = addReply.allTimeReport;
-    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    } 
+    return checkUpdateReport(allTimeReport, ticket);
+    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    // } 
     
-    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-        return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-    }
-    allTimeReport.updatedTickets.push(ticket.ticketId); 
-    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-        .then(function(){
-            return getAssetRegistry('org.openticket.AllTimeReport');
-        })
-        .then(function(reportingRegistry){
-            return reportingRegistry.update(allTimeReport);
-        })
+    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+    //     return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    // }
+    // allTimeReport.updatedTickets.push(ticket.ticketId); 
+    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    // return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    //     .then(function(){
+    //         return getAssetRegistry('org.openticket.AllTimeReport');
+    //     })
+    //     .then(function(reportingRegistry){
+    //         return reportingRegistry.update(allTimeReport);
+    //     })
 } 
 
 
@@ -231,32 +262,33 @@ function assignTicket(assignTicket) {
 
     // Reporting
     var allTimeReport = assignTicket.allTimeReport;
-    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    } 
+    return checkUpdateReport(allTimeReport, ticket);
+    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    // } 
     
-    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-        return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-    }
-    allTimeReport.updatedTickets.push(ticket.ticketId); 
-    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-        .then(function(){
-            return getAssetRegistry('org.openticket.AllTimeReport');
-        })
-        .then(function(reportingRegistry){
-            return reportingRegistry.update(allTimeReport);
-        })
+    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+    //     return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    // }
+    // allTimeReport.updatedTickets.push(ticket.ticketId); 
+    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    // return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    //     .then(function(){
+    //         return getAssetRegistry('org.openticket.AllTimeReport');
+    //     })
+    //     .then(function(reportingRegistry){
+    //         return reportingRegistry.update(allTimeReport);
+    //     })
  }
 
 
@@ -274,32 +306,33 @@ function changeClient(changeClient) {
 
    // Reporting
    var allTimeReport = changeClient.allTimeReport;
-   if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-       allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-       allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-   } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-       allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-       allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-   } 
+   return checkUpdateReport(assignTicket, ticket);
+//    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+//        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+//        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+//    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+//        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+//        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+//    } 
    
-   if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-       return getAssetRegistry('org.openticket.Ticket')
-       .then(function(ticketRegistry){
-           return ticketRegistry.update(ticket);
-       })
-   }
-   allTimeReport.updatedTickets.push(ticket.ticketId); 
-   allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-   return getAssetRegistry('org.openticket.Ticket')
-       .then(function(ticketRegistry){
-           return ticketRegistry.update(ticket);
-       })
-       .then(function(){
-           return getAssetRegistry('org.openticket.AllTimeReport');
-       })
-       .then(function(reportingRegistry){
-           return reportingRegistry.update(allTimeReport);
-       })
+//    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+//        return getAssetRegistry('org.openticket.Ticket')
+//        .then(function(ticketRegistry){
+//            return ticketRegistry.update(ticket);
+//        })
+//    }
+//    allTimeReport.updatedTickets.push(ticket.ticketId); 
+//    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+//    return getAssetRegistry('org.openticket.Ticket')
+//        .then(function(ticketRegistry){
+//            return ticketRegistry.update(ticket);
+//        })
+//        .then(function(){
+//            return getAssetRegistry('org.openticket.AllTimeReport');
+//        })
+//        .then(function(reportingRegistry){
+//            return reportingRegistry.update(allTimeReport);
+//        })
  }
 
 
@@ -317,32 +350,33 @@ function changeSubject(changeSubject) {
 
     // Reporting
     var allTimeReport = changeSubject.allTimeReport;
-    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    } 
+    return checkUpdateReport(allTimeReport, ticket);
+    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
+    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
+    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
+    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
+    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
+    // } 
     
-    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-        return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-    }
-    allTimeReport.updatedTickets.push(ticket.ticketId); 
-    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    return getAssetRegistry('org.openticket.Ticket')
-        .then(function(ticketRegistry){
-            return ticketRegistry.update(ticket);
-        })
-        .then(function(){
-            return getAssetRegistry('org.openticket.AllTimeReport');
-        })
-        .then(function(reportingRegistry){
-            return reportingRegistry.update(allTimeReport);
-        })
+    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
+    //     return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    // }
+    // allTimeReport.updatedTickets.push(ticket.ticketId); 
+    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
+    // return getAssetRegistry('org.openticket.Ticket')
+    //     .then(function(ticketRegistry){
+    //         return ticketRegistry.update(ticket);
+    //     })
+    //     .then(function(){
+    //         return getAssetRegistry('org.openticket.AllTimeReport');
+    //     })
+    //     .then(function(reportingRegistry){
+    //         return reportingRegistry.update(allTimeReport);
+    //     })
 }
 
 

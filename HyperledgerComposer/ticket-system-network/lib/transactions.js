@@ -20,7 +20,7 @@ function removeArrayValue(arr, val) {
     })
 }
 
-function checkUpdate(allTimeReport, ticket){
+function checkUpdateReport(allTimeReport, ticket){
     if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
         allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
         allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
@@ -88,8 +88,6 @@ function setupSystem(setupSystem) {
     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
     allTimeReport.ticketsUpdated = 0;
     allTimeReport.ticketsClosed = 0;
-    // allTimeReport.avgTimeOpen = 'N/A';
-    // allTimeReport.avgTimeUpdated = 'N/A';
 
     // Update Network   
     return getParticipantRegistry(NS + '.Technician')
@@ -167,37 +165,7 @@ function addNote(addNote) {
     ticket.notes = [newNote];
     ticket.status = "UPDATED";
     ticket.updateTime = addNote.timestamp;
-    // console.log('[' + ticket.updateTime + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
-
-    // Reporting
-    var allTimeReport = addNote.allTimeReport;
-    return checkUpdateReport(allTimeReport, ticket);
-    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    // } 
-    
-    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-    //     return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    // }
-    // allTimeReport.updatedTickets.push(ticket.ticketId); 
-    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    // return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    //     .then(function(){
-    //         return getAssetRegistry('org.openticket.AllTimeReport');
-    //     })
-    //     .then(function(reportingRegistry){
-    //         return reportingRegistry.update(allTimeReport);
-    //     })
+    return checkUpdateReport(addNote.allTimeReport, ticket);
 }
 
 
@@ -214,37 +182,7 @@ function addReply(addReply) {
     ticket.status = "UPDATED";
     ticket.isAnswered = true;
     ticket.updateTime = addReply.timestamp;
-    // console.log('[' + ticket.updateTime + ']: Note "' + newNote + ' added to ticket ' + ticket + '.');
-
-    // Reporting
-    var allTimeReport = addReply.allTimeReport;
-    return checkUpdateReport(allTimeReport, ticket);
-    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    // } 
-    
-    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-    //     return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    // }
-    // allTimeReport.updatedTickets.push(ticket.ticketId); 
-    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    // return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    //     .then(function(){
-    //         return getAssetRegistry('org.openticket.AllTimeReport');
-    //     })
-    //     .then(function(reportingRegistry){
-    //         return reportingRegistry.update(allTimeReport);
-    //     })
+    return checkUpdateReport(addReply.allTimeReport, ticket);
 } 
 
 
@@ -259,36 +197,7 @@ function assignTicket(assignTicket) {
     ticket.technician = assignTicket.technician;
     ticket.status = "UPDATED";
     ticket.updateTime = assignTicket.timestamp;
-
-    // Reporting
-    var allTimeReport = assignTicket.allTimeReport;
-    return checkUpdateReport(allTimeReport, ticket);
-    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    // } 
-    
-    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-    //     return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    // }
-    // allTimeReport.updatedTickets.push(ticket.ticketId); 
-    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    // return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    //     .then(function(){
-    //         return getAssetRegistry('org.openticket.AllTimeReport');
-    //     })
-    //     .then(function(reportingRegistry){
-    //         return reportingRegistry.update(allTimeReport);
-    //     })
+    return checkUpdateReport(assignTicket.allTimeReport, ticket);
  }
 
 
@@ -303,36 +212,7 @@ function changeClient(changeClient) {
     ticket.client = changeClient.client;
     ticket.status = "UPDATED";
     ticket.updateTime = changeClient.timestamp;
-
-   // Reporting
-   var allTimeReport = changeClient.allTimeReport;
-   return checkUpdateReport(assignTicket, ticket);
-//    if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-//        allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-//        allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-//    } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-//        allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-//        allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-//    } 
-   
-//    if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-//        return getAssetRegistry('org.openticket.Ticket')
-//        .then(function(ticketRegistry){
-//            return ticketRegistry.update(ticket);
-//        })
-//    }
-//    allTimeReport.updatedTickets.push(ticket.ticketId); 
-//    allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-//    return getAssetRegistry('org.openticket.Ticket')
-//        .then(function(ticketRegistry){
-//            return ticketRegistry.update(ticket);
-//        })
-//        .then(function(){
-//            return getAssetRegistry('org.openticket.AllTimeReport');
-//        })
-//        .then(function(reportingRegistry){
-//            return reportingRegistry.update(allTimeReport);
-//        })
+    return checkUpdateReport(changeClient.allTimeReport, ticket);
  }
 
 
@@ -347,36 +227,7 @@ function changeSubject(changeSubject) {
     ticket.subject = changeSubject.subject;
     ticket.status = "UPDATED";
     ticket.updateTime = changeClient.timestamp;
-
-    // Reporting
-    var allTimeReport = changeSubject.allTimeReport;
-    return checkUpdateReport(allTimeReport, ticket);
-    // if (allTimeReport.openTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.openTickets = removeArrayValue(allTimeReport.openTickets, ticket.ticketId);
-    //     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
-    // } else if (allTimeReport.closedTickets.indexOf(ticket.ticketId) != -1) {
-    //     allTimeReport.closedTickets = removeArrayValue(allTimeReport.closedTickets, ticket.ticketId);
-    //     allTimeReport.ticketsClosed = allTimeReport.closedTickets.length;
-    // } 
-    
-    // if (allTimeReport.updatedTickets.indexOf(ticket.ticketId) != -1) {    
-    //     return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    // }
-    // allTimeReport.updatedTickets.push(ticket.ticketId); 
-    // allTimeReport.ticketsUpdated = allTimeReport.updatedTickets.length;
-    // return getAssetRegistry('org.openticket.Ticket')
-    //     .then(function(ticketRegistry){
-    //         return ticketRegistry.update(ticket);
-    //     })
-    //     .then(function(){
-    //         return getAssetRegistry('org.openticket.AllTimeReport');
-    //     })
-    //     .then(function(reportingRegistry){
-    //         return reportingRegistry.update(allTimeReport);
-    //     })
+    return checkUpdateReport(changeSubject.allTimeReport, ticket);
 }
 
 

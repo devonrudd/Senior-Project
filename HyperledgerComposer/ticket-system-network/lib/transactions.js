@@ -162,7 +162,7 @@ function createTicket(createTicket) {
 function addNote(addNote) {
     var ticket = addNote.ticket;
     var newNote = addNote.note;
-    ticket.notes = [newNote];
+    ticket.notes.push(newNote);
     ticket.status = "UPDATED";
     ticket.updateTime = addNote.timestamp;
     return checkUpdateReport(addNote.allTimeReport, ticket);
@@ -178,7 +178,7 @@ function addNote(addNote) {
 function addReply(addReply) {
     var ticket = addReply.ticket;
     var newReply = addReply.reply;
-    ticket.replyThread = [newReply];
+    ticket.replyThread.push(newReply);
     ticket.status = "UPDATED";
     ticket.isAnswered = true;
     ticket.updateTime = addReply.timestamp;

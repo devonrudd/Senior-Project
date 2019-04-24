@@ -84,6 +84,7 @@ function setupSystem(setupSystem) {
     // Add Reporting
     var allTimeReport = factory.newResource(NS, 'AllTimeReport', 'AllTimeReport');
     allTimeReport.openTickets = ["0000"];
+    allTimeReport.updatedTickets = [];
     allTimeReport.closedTickets = [];
     allTimeReport.ticketsOpen = allTimeReport.openTickets.length;
     allTimeReport.ticketsUpdated = 0;
@@ -131,7 +132,7 @@ function createTicket(createTicket) {
     ticket.subject = createTicket.ticket.subject;
     ticket.description = createTicket.ticket.description;
     ticket.notes = createTicket.ticket.notes;
-    ticket.technician = factory.newRelationship(NS, 'Technician', createTicket.ticket.technician);
+    // ticket.technician = factory.newRelationship(NS, 'Technician', createTicket.ticket.technician);
     ticket.client = factory.newRelationship(NS, 'Client', createTicket.ticket.client);
     ticket.openTime = createTicket.timestamp;
 

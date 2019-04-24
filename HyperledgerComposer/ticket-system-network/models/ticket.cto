@@ -44,7 +44,7 @@ asset Ticket identified by ticketId {
   o DateTime openTime
   o DateTime updateTime optional
   o DateTime closedTime optional
-  --> Technician technician
+  --> Technician technician optional
   --> Client client
 }
 

@@ -15,13 +15,13 @@
 /**
  * Sample access control list.
  */
-// rule TechniciansCanReadEverything {
-//     description: "Allow all Technicians access to all resources"
-//     participant: "org.openticket.Technician"
-//     operation: UPDATE
-//     resource: "org.openticket.*"
-//     action: ALLOW
-// }
+rule TechniciansCanReadEverything {
+    description: "Allow all Technicians access to all resources"
+    participant: "org.openticket.Technician"
+    operation: UPDATE
+    resource: "org.openticket.*"
+    action: ALLOW
+}
 
 // rule ClientsCanSubmitTickets {
 //     description: "Allow all clients to submit tickets"
